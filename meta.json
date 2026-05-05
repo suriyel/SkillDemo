@@ -1,6 +1,6 @@
 {
   "bpId": "demo",
-  "copiedAt": "2026-05-05T13:26:01.844Z",
+  "copiedAt": "2026-05-05T16:29:23.782Z",
   "headerVersion": 5,
   "skills": [
     {
@@ -10,7 +10,8 @@
       "name": "long-task-ucd",
       "source": "reuse",
       "headerInjected": false,
-      "headerReason": "already-has-header"
+      "headerReason": "already-has-header",
+      "resourcePlaceholdersRendered": 0
     },
     {
       "originalRef": "claude:bp-demo/long-task-requirements",
@@ -19,7 +20,8 @@
       "name": "long-task-requirements",
       "source": "reuse",
       "headerInjected": false,
-      "headerReason": "already-has-header"
+      "headerReason": "already-has-header",
+      "resourcePlaceholdersRendered": 0
     },
     {
       "originalRef": "claude:bp-demo/long-task-design",
@@ -28,7 +30,8 @@
       "name": "long-task-design",
       "source": "reuse",
       "headerInjected": false,
-      "headerReason": "already-has-header"
+      "headerReason": "already-has-header",
+      "resourcePlaceholdersRendered": 0
     }
   ]
 }
