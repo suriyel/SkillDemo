@@ -52,11 +52,18 @@
             "id": "long_task_work_tdd",
             "title": "long-task-work-tdd",
             "skillRef": "claude:long-task/long-task-work-tdd",
-            "x": 51.39996337890625,
-            "y": 129
+            "x": 60.39996337890625,
+            "y": 139
           }
         ],
-        "edges": []
+        "edges": [
+          {
+            "id": "bemosxvni9tqdn",
+            "from": "long_task_feature_design",
+            "to": "long_task_work_tdd",
+            "when": "status == \"ok\""
+          }
+        ]
       },
       "maxIterations": 200
     }
