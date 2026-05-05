@@ -1,6 +1,6 @@
 {
   "bpId": "demo",
-  "copiedAt": "2026-05-05T07:24:54.409Z",
+  "copiedAt": "2026-05-05T07:57:51.994Z",
   "headerVersion": 5,
   "skills": [
     {
@@ -22,12 +22,21 @@
       "headerReason": "already-has-header"
     },
     {
-      "originalRef": "claude:long-task/long-task-requirements",
+      "originalRef": "claude:bp-demo/long-task-requirements",
       "newRef": "claude:bp-demo/long-task-requirements",
       "tool": "claude",
       "name": "long-task-requirements",
+      "source": "reuse",
+      "headerInjected": false,
+      "headerReason": "already-has-header"
+    },
+    {
+      "originalRef": "claude:long-task/long-task-design",
+      "newRef": "claude:bp-demo/long-task-design",
+      "tool": "claude",
+      "name": "long-task-design",
       "srcPlugin": "long-task",
-      "srcDir": "C:\\Users\\Shannon\\.claude\\plugins\\cache\\longtaskforagent\\long-task\\1.0.0\\skills\\long-task-requirements",
+      "srcDir": "C:\\Users\\Shannon\\.claude\\plugins\\cache\\longtaskforagent\\long-task\\1.0.0\\skills\\long-task-design",
       "headerInjected": true,
       "headerReason": "inserted"
     }

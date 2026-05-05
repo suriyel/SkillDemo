@@ -17,15 +17,22 @@
       "id": "long_task_ucd",
       "title": "long-task-ucd",
       "skillRef": "claude:bp-demo/long-task-ucd",
-      "x": 325.39996337890625,
-      "y": 143.875
+      "x": 88.39996337890625,
+      "y": 281.875
     },
     {
       "id": "long_task_requirements",
       "title": "long-task-requirements",
       "skillRef": "claude:bp-demo/long-task-requirements",
-      "x": 95.39996337890625,
-      "y": 191.875
+      "x": 135.39996337890625,
+      "y": 149.875
+    },
+    {
+      "id": "long_task_design",
+      "title": "long-task-design",
+      "skillRef": "claude:bp-demo/long-task-design",
+      "x": 273.39996337890625,
+      "y": 400.875
     }
   ],
   "edges": [
@@ -37,6 +44,11 @@
     {
       "from": "long_task_requirements",
       "to": "long_task_ucd",
+      "when": "status == \"ok\""
+    },
+    {
+      "from": "long_task_ucd",
+      "to": "long_task_design",
       "when": "status == \"ok\""
     }
   ]
