@@ -206,3 +206,33 @@ SRS 描述系统必须做什么（WHAT）。设计文档描述怎么做（HOW）
 2. 每个关键依赖与目标 runtime 版本兼容。
 3. 对 copyleft license（GPL/AGPL）必须显式与用户确认。
 4. brownfield：新选型不得与 `$HARNESS_MEMORY_DIR/rules/coding-constraints.md` 的禁用清单冲突；如必须冲突，在 §1.4 "Rejected Alternatives" 列或以 `⚠ Design Override: [reason]` 标注。
+
+
+<!-- SCHEMA START: default -->
+### Tasks schema "default"
+
+每条 task 必含以下字段（loop 迭代时按数组逐条处理）：
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `id` | string \| number | ✓ (L1) |  |
+| `status` | string | ✓ (L1) | default `pending` |
+
+**doneValues** (匹配则视为 task 完成，loop 自动跳过)：`done`, `passing`
+
+**extensionFieldsAllowed=true** → 未声明字段原样透传，inner skill 可用 `{{loop.task.<field>}}` 引用。
+
+**Example item (单条 task 形态)**:
+```json
+{
+  "id": 1,
+  "status": "pending"
+}
+```
+
+**bp-tasks 调用模板**（在 bp-advance 之前执行）：
+```bash
+node "$BP_TASKS_CMD" set iter1 --items='[{"id":1,"status":"pending"}]'
+```
+（触发条件：`status == "ok"`）
+<!-- SCHEMA END: default -->
