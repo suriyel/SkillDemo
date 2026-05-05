@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "demo",
+  "version": "1.0.1",
+  "title": "测试",
+  "description": "",
+  "startNode": "long_task_explore",
+  "nodes": [
+    {
+      "id": "long_task_explore",
+      "title": "long-task-explore",
+      "skillRef": "claude:bp-demo/long-task-explore",
+      "x": 0,
+      "y": 39.875
+    },
+    {
+      "id": "long_task_ucd",
+      "title": "long-task-ucd",
+      "skillRef": "claude:bp-demo/long-task-ucd",
+      "x": 325.39996337890625,
+      "y": 143.875
+    },
+    {
+      "id": "long_task_requirements",
+      "title": "long-task-requirements",
+      "skillRef": "claude:bp-demo/long-task-requirements",
+      "x": 95.39996337890625,
+      "y": 191.875
+    }
+  ],
+  "edges": [
+    {
+      "from": "long_task_explore",
+      "to": "long_task_requirements",
+      "when": "status == \"ok\""
+    },
+    {
+      "from": "long_task_requirements",
+      "to": "long_task_ucd",
+      "when": "status == \"ok\""
+    }
+  ]
+}

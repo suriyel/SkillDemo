@@ -1,0 +1,35 @@
+{
+  "bpId": "demo",
+  "copiedAt": "2026-05-05T07:24:54.409Z",
+  "headerVersion": 5,
+  "skills": [
+    {
+      "originalRef": "claude:bp-demo/long-task-explore",
+      "newRef": "claude:bp-demo/long-task-explore",
+      "tool": "claude",
+      "name": "long-task-explore",
+      "source": "reuse",
+      "headerInjected": false,
+      "headerReason": "already-has-header"
+    },
+    {
+      "originalRef": "claude:bp-demo/long-task-ucd",
+      "newRef": "claude:bp-demo/long-task-ucd",
+      "tool": "claude",
+      "name": "long-task-ucd",
+      "source": "reuse",
+      "headerInjected": false,
+      "headerReason": "already-has-header"
+    },
+    {
+      "originalRef": "claude:long-task/long-task-requirements",
+      "newRef": "claude:bp-demo/long-task-requirements",
+      "tool": "claude",
+      "name": "long-task-requirements",
+      "srcPlugin": "long-task",
+      "srcDir": "C:\\Users\\Shannon\\.claude\\plugins\\cache\\longtaskforagent\\long-task\\1.0.0\\skills\\long-task-requirements",
+      "headerInjected": true,
+      "headerReason": "inserted"
+    }
+  ]
+}
