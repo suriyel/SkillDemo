@@ -13,6 +13,12 @@ description: "Use when no SRS doc and no design doc and no feature-list.json exi
 > About to choose `blocked`? Call **AskUserQuestion** FIRST and let the user decide; report `blocked` only if the user explicitly wants to halt.
 > All user questions MUST go through **AskUserQuestion** — never ask in plain text in your assistant output.
 
+> ## 📒 Memory contract (cross-skill shared docs)
+> All inter-skill artifacts live under `$HARNESS_MEMORY_DIR/` (resolved to `<cwd>/.harness/memory/`).
+> - Read inputs from `$HARNESS_MEMORY_DIR/{plans,rules,templates,explore}/`
+> - Write outputs to the same tree — **never** to `docs/` in the user's project
+> - Use `mkdir -p "$HARNESS_MEMORY_DIR/<subdir>/"` before first write
+
 
 # 需求挖掘与 SRS 生成
 
@@ -49,7 +55,7 @@ description: "Use when no SRS doc and no design doc and no feature-list.json exi
 9. **[仅 Expert] 一致性校验（E10）** —— DISPATCH `long-task-requirements-alignment`
 10. **SRS 合规评审（Step 13）** —— DISPATCH reviewer（加载 `prompts/srs-reviewer-prompt.md`）；关卡：所有检查 PASS
 11. **呈现并审批 SRS（Step 14）** —— Lite：单一合并；Expert：按章节逐段
-12. **保存（Step 15）** —— DISPATCH `long-task-requirements-finalize`（写 `docs/plans/YYYY-MM-DD-<topic>-srs.md` + 可选 deferred + git commit）
+12. **保存（Step 15）** —— DISPATCH `long-task-requirements-finalize`（写 `$HARNESS_MEMORY_DIR/plans/YYYY-MM-DD-<topic>-srs.md` + 可选 deferred + git commit）
 13. **衔接到 UCD（Step 16）** —— **必需子 skill：** 调用 `long-task:long-task-ucd`
 
 **终态是调用 long-task-ucd。** 不要调用任何其他 skill。
@@ -59,13 +65,13 @@ description: "Use when no SRS doc and no design doc and no feature-list.json exi
 1. 完整阅读用户提供的需求文档 / 想法描述
 2. 探索项目将基于或集成的已有代码 / 仓库
 3. 识别初始约束：技术栈、平台、集成、法规
-4. 阅读 `docs/rules/`（如存在且已填充）—— Phase 0-pre scanner 抽取的存量代码库约定：
+4. 阅读 `$HARNESS_MEMORY_DIR/rules/`（如存在且已填充）—— Phase 0-pre scanner 抽取的存量代码库约定：
    - `coding-constraints.md` —— 2/3方件 库约束、禁用 API、强制内部库
    - `build-and-compilation.md` —— 构建系统与 CI/CD 约束
    - 这些约束可能影响需求可行性，应在挖掘期间考虑（例如："这个特性需要 HTTP 调用——项目强制使用内部 HTTP 库，不能用标准 fetch"；"项目 CI 要求所有代码通过 checkstyle——影响验收标准"）
 5. 检查 SRS 模板：
    - 如果用户指定了模板路径 → 读取并校验
-   - 否则 → 阅读 `docs/templates/srs-template.md`（本 skill 默认模板）
+   - 否则 → 阅读 `$HARNESS_MEMORY_DIR/templates/srs-template.md`（本 skill 默认模板）
    - **校验**：模板必须是 `.md` 文件且至少包含一个 `## ` 标题
 
 ## Step 1.5：复杂度评估（内部——无用户交互）
@@ -102,7 +108,7 @@ Lite 挖掘期间，如出现下列任一，无缝切换至 Expert 轨道：
 ## Step 1.6：定向代码库探索（仅存量项目——无用户交互）
 
 **触发条件**（必须全部为真）：
-1. `docs/rules/` 存在且至少包含 1 个 `.md` 文件（非全新项目占位）（存量项目）
+1. `$HARNESS_MEMORY_DIR/rules/` 存在且至少包含 1 个 `.md` 文件（非全新项目占位）（存量项目）
 2. 用户描述提到具体功能、领域区域或特定模块（非过度抽象以至无法定向）
 
 **跳过条件**：全新项目，或用户描述过于模糊无法推导聚焦方向（例如："我想建一个平台"且无具体细节）。

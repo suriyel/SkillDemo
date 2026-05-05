@@ -4,15 +4,8 @@
   "version": "1.0.1",
   "title": "测试",
   "description": "",
-  "startNode": "long_task_explore",
+  "startNode": "long_task_requirements",
   "nodes": [
-    {
-      "id": "long_task_explore",
-      "title": "long-task-explore",
-      "skillRef": "claude:bp-demo/long-task-explore",
-      "x": 0,
-      "y": 39.875
-    },
     {
       "id": "long_task_ucd",
       "title": "long-task-ucd",
@@ -36,11 +29,6 @@
     }
   ],
   "edges": [
-    {
-      "from": "long_task_explore",
-      "to": "long_task_requirements",
-      "when": "status == \"ok\""
-    },
     {
       "from": "long_task_requirements",
       "to": "long_task_ucd",

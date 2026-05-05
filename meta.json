@@ -1,17 +1,8 @@
 {
   "bpId": "demo",
-  "copiedAt": "2026-05-05T08:02:57.146Z",
+  "copiedAt": "2026-05-05T10:42:15.357Z",
   "headerVersion": 5,
   "skills": [
-    {
-      "originalRef": "claude:bp-demo/long-task-explore",
-      "newRef": "claude:bp-demo/long-task-explore",
-      "tool": "claude",
-      "name": "long-task-explore",
-      "source": "reuse",
-      "headerInjected": false,
-      "headerReason": "already-has-header"
-    },
     {
       "originalRef": "claude:bp-demo/long-task-ucd",
       "newRef": "claude:bp-demo/long-task-ucd",

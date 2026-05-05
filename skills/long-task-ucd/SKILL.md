@@ -13,6 +13,12 @@ description: "Use when SRS doc exists but no UCD doc and no design doc and no fe
 > About to choose `blocked`? Call **AskUserQuestion** FIRST and let the user decide; report `blocked` only if the user explicitly wants to halt.
 > All user questions MUST go through **AskUserQuestion** — never ask in plain text in your assistant output.
 
+> ## 📒 Memory contract (cross-skill shared docs)
+> All inter-skill artifacts live under `$HARNESS_MEMORY_DIR/` (resolved to `<cwd>/.harness/memory/`).
+> - Read inputs from `$HARNESS_MEMORY_DIR/{plans,rules,templates,explore}/`
+> - Write outputs to the same tree — **never** to `docs/` in the user's project
+> - Use `mkdir -p "$HARNESS_MEMORY_DIR/<subdir>/"` before first write
+
 
 # UI Component Design (UCD) 样式指南生成
 
@@ -26,7 +32,7 @@ description: "Use when SRS doc exists but no UCD doc and no design doc and no fe
 
 本阶段在 **SRS 审批之后**、**设计之前**运行。适用条件：
 - 已审批的 SRS 含 UI 相关功能需求（FR-xxx 含面向用户的屏幕、页面或组件）
-- `docs/plans/` 下不存在 UCD 文档（`*-ucd.md`）
+- `$HARNESS_MEMORY_DIR/plans/` 下不存在 UCD 文档（`*-ucd.md`）
 
 **如果 SRS 无 UI 特性**：宣告 "No UI features detected in SRS — skipping UCD phase"，随即通过 `long-task:long-task-design` 衔接到设计。
 
@@ -34,21 +40,21 @@ description: "Use when SRS doc exists but no UCD doc and no design doc and no fe
 
 你必须为下列每一项创建一个 TodoWrite 任务并按顺序完成：
 
-1. **阅读已审批 SRS** —— 来自 `docs/plans/*-srs.md`
+1. **阅读已审批 SRS** —— 来自 `$HARNESS_MEMORY_DIR/plans/*-srs.md`
 2. **抽取 UI 范围** —— 识别所有 UI 相关需求与用户角色
 3. **定义视觉风格方向** —— 提出 2-3 个风格选项与 mood board
 4. **生成组件级提示词** —— 每种 UI 组件类型的 text-to-image 提示词
 5. **生成页面级提示词** —— 每个关键页面/屏幕的 text-to-image 提示词
 6. **定义样式 token** —— 色板、字体、间距、图标风格
 7. **呈现并审批 UCD** —— 非平凡项目按章节逐段
-8. **保存 UCD 文档** —— `docs/plans/YYYY-MM-DD-<topic>-ucd.md` 并提交
+8. **保存 UCD 文档** —— `$HARNESS_MEMORY_DIR/plans/YYYY-MM-DD-<topic>-ucd.md` 并提交
 9. **衔接到设计** —— **必需子 skill：** 调用 `long-task:long-task-design`
 
 **终态是调用 long-task-design。** 不要调用任何其他 skill。
 
 ## Step 1：阅读 SRS 与抽取 UI 范围
 
-1. 读取 `docs/plans/*-srs.md` 中已审批的 SRS 文档
+1. 读取 `$HARNESS_MEMORY_DIR/plans/*-srs.md` 中已审批的 SRS 文档
 2. 抽取 UI 相关输入：
    - **用户角色** —— 技术水平、无障碍需求、设备偏好
    - **带 UI 的功能需求** —— 屏幕、页面、表单、仪表盘、数据可视化
@@ -229,7 +235,7 @@ description: "Use when SRS doc exists but no UCD doc and no design doc and no fe
 
 ## Step 7：保存 UCD 文档
 
-把已审批的 UCD 样式指南保存到 `docs/plans/YYYY-MM-DD-<topic>-ucd.md`。
+把已审批的 UCD 样式指南保存到 `$HARNESS_MEMORY_DIR/plans/YYYY-MM-DD-<topic>-ucd.md`。
 
 文档结构：
 
@@ -238,7 +244,7 @@ description: "Use when SRS doc exists but no UCD doc and no design doc and no fe
 
 **Date**: YYYY-MM-DD
 **Status**: Approved
-**SRS Reference**: docs/plans/YYYY-MM-DD-<topic>-srs.md
+**SRS Reference**: $HARNESS_MEMORY_DIR/plans/YYYY-MM-DD-<topic>-srs.md
 
 ## 1. Visual Style Direction
 [Chosen style, rationale]

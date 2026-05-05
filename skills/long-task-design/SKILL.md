@@ -13,6 +13,12 @@ description: "Use when SRS doc exists but no design doc and no feature-list.json
 > About to choose `blocked`? Call **AskUserQuestion** FIRST and let the user decide; report `blocked` only if the user explicitly wants to halt.
 > All user questions MUST go through **AskUserQuestion** — never ask in plain text in your assistant output.
 
+> ## 📒 Memory contract (cross-skill shared docs)
+> All inter-skill artifacts live under `$HARNESS_MEMORY_DIR/` (resolved to `<cwd>/.harness/memory/`).
+> - Read inputs from `$HARNESS_MEMORY_DIR/{plans,rules,templates,explore}/`
+> - Write outputs to the same tree — **never** to `docs/` in the user's project
+> - Use `mkdir -p "$HARNESS_MEMORY_DIR/<subdir>/"` before first write
+
 
 # 设计文档生成
 
@@ -30,19 +36,19 @@ SRS 描述系统必须做什么（WHAT）。设计文档描述怎么做（HOW）
 
 你必须为下列每一项创建一个 TodoWrite 任务并按顺序完成：
 
-1. **阅读已审批 SRS** —— 来自 `docs/plans/*-srs.md`
+1. **阅读已审批 SRS** —— 来自 `$HARNESS_MEMORY_DIR/plans/*-srs.md`
 2. **探索技术上下文** —— 已有代码、框架、部署环境
 3. **提出 2-3 个方案**（对话步骤，不产出独立章节）—— 带权衡与你的推荐；选定后论证写入 §1.4
 4. **按章节审批设计** —— §1 架构、§2 Feature Integration Specs、§3 数据模型（条件）、§4 内部 API 契约、§5 外部接口（条件）、§6 任务分解与依赖链
-5. **撰写设计文档** —— 保存到 `docs/plans/YYYY-MM-DD-<topic>-design.md` 并提交
+5. **撰写设计文档** —— 保存到 `$HARNESS_MEMORY_DIR/plans/YYYY-MM-DD-<topic>-design.md` 并提交
 6. **衔接到 ATS** —— **必需子 skill：** 调用 `long-task:long-task-ats`
 
 **终态是调用 long-task-ats。** 不要调用任何其他实现 skill。
 
 ## Step 1：阅读 SRS 与 UCD 并抽取设计输入
 
-1. 读取 `docs/plans/*-srs.md` 中已审批的 SRS 文档
-2. 读取 `docs/plans/*-ucd.md` 中已审批的 UCD 样式指南（如存在——仅 UI 项目会有）
+1. 读取 `$HARNESS_MEMORY_DIR/plans/*-srs.md` 中已审批的 SRS 文档
+2. 读取 `$HARNESS_MEMORY_DIR/plans/*-ucd.md` 中已审批的 UCD 样式指南（如存在——仅 UI 项目会有）
 3. 抽取关键设计驱动：
    - **功能范围** —— FR 数量、优先级分布、依赖链
    - **NFR 阈值** —— 影响架构的性能目标、可靠性、可扩展性
@@ -57,10 +63,10 @@ SRS 描述系统必须做什么（WHAT）。设计文档描述怎么做（HOW）
 
 1. 探索项目将基于的已有代码 / 仓库
 2. 识别 SRS 之外的技术约束（例如 monorepo 结构、CI/CD 流水线、已有库）
-3. 若 `docs/rules/*.md` 存在（brownfield）：阅读以知晓已有约束，使 §1.4 Tech Stack 新选型不与 `docs/rules/coding-constraints.md` 的禁用清单冲突。**不要**把 `docs/rules/` 的内容抄入设计文档任何章节。
+3. 若 `$HARNESS_MEMORY_DIR/rules/*.md` 存在（brownfield）：阅读以知晓已有约束，使 §1.4 Tech Stack 新选型不与 `$HARNESS_MEMORY_DIR/rules/coding-constraints.md` 的禁用清单冲突。**不要**把 `$HARNESS_MEMORY_DIR/rules/` 的内容抄入设计文档任何章节。
 4. 检查设计文档模板：
    - 如果用户指定了模板路径 → 读取并校验
-   - 否则 → 读取 `docs/templates/design-template.md`（本 skill 默认模板）
+   - 否则 → 读取 `$HARNESS_MEMORY_DIR/templates/design-template.md`（本 skill 默认模板）
    - **校验**：模板必须是 `.md` 文件且至少包含一个 `## ` 标题
 
 ## Step 3：提出方案（对话步骤，不落盘）
@@ -126,11 +132,11 @@ SRS 描述系统必须做什么（WHAT）。设计文档描述怎么做（HOW）
 
 ## Step 5：撰写设计文档
 
-把已审批设计保存到 `docs/plans/YYYY-MM-DD-<topic>-design.md`。
+把已审批设计保存到 `$HARNESS_MEMORY_DIR/plans/YYYY-MM-DD-<topic>-design.md`。
 
 ### 模板用法
 
-读取 Step 2 找到的模板（用户指定或默认 `docs/templates/design-template.md`）：
+读取 Step 2 找到的模板（用户指定或默认 `$HARNESS_MEMORY_DIR/templates/design-template.md`）：
 1. 保留模板的标题结构
 2. 用已审批设计内容替换每个标题下的指引文字
 3. 如顶部尚无元数据则添加（`Date`、`Status`、`SRS Reference`、`Template` 路径）
@@ -207,4 +213,4 @@ SRS 描述系统必须做什么（WHAT）。设计文档描述怎么做（HOW）
 1. 关键依赖指定精确版本或受约束区间（`1.2.3` / `^1.2.0` / `>=1.2,<2.0`）；不得 `latest` 或省略。
 2. 每个关键依赖与目标 runtime 版本兼容。
 3. 对 copyleft license（GPL/AGPL）必须显式与用户确认。
-4. brownfield：新选型不得与 `docs/rules/coding-constraints.md` 的禁用清单冲突；如必须冲突，在 §1.4 "Rejected Alternatives" 列或以 `⚠ Design Override: [reason]` 标注。
+4. brownfield：新选型不得与 `$HARNESS_MEMORY_DIR/rules/coding-constraints.md` 的禁用清单冲突；如必须冲突，在 §1.4 "Rejected Alternatives" 列或以 `⚠ Design Override: [reason]` 标注。
