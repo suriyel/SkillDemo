@@ -1,65 +1,41 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 1,
   "id": "demo",
   "version": "1.0.1",
   "title": "测试",
   "startNode": "long_task_requirements",
-  "tasksSchemas": {
-    "default": {
-      "example": {
-        "id": 1,
-        "status": "pending"
-      }
-    }
-  },
   "nodes": [
     {
       "id": "long_task_requirements",
+      "title": "long-task-requirements",
       "skillRef": "claude:bp-demo/long-task-requirements",
-      "x": 47,
-      "y": 141
+      "x": 47.39996337890625,
+      "y": 141.875
     },
     {
       "id": "long_task_ucd",
+      "title": "long-task-ucd",
       "skillRef": "claude:bp-demo/long-task-ucd",
-      "x": 169,
-      "y": 257
+      "x": 169.39996337890625,
+      "y": 257.875
     },
     {
       "id": "long_task_design",
+      "title": "long-task-design",
       "skillRef": "claude:bp-demo/long-task-design",
-      "x": 266,
-      "y": 408
-    },
-    {
-      "id": "iter1",
-      "kind": "loop",
-      "title": "iter1",
-      "x": 500,
-      "y": 408,
-      "iterator": {
-        "kind": "tasks",
-        "tasksSchemaRef": "default"
-      },
-      "body": {
-        "startNode": "work",
-        "nodes": [
-          {
-            "id": "work",
-            "skillRef": "claude:bp-demo/long-task-ucd",
-            "x": 10,
-            "y": 30,
-            "title": "work"
-          }
-        ],
-        "edges": []
-      }
+      "x": 266.39996337890625,
+      "y": 408.875
     }
   ],
   "edges": [
     {
-      "from": "long_task_design",
-      "to": "iter1",
+      "from": "long_task_requirements",
+      "to": "long_task_ucd",
+      "when": "status == \"ok\""
+    },
+    {
+      "from": "long_task_ucd",
+      "to": "long_task_design",
       "when": "status == \"ok\""
     }
   ]
