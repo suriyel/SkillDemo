@@ -1,6 +1,6 @@
 {
   "bpId": "demo",
-  "copiedAt": "2026-05-05T07:58:42.900Z",
+  "copiedAt": "2026-05-05T08:02:57.146Z",
   "headerVersion": 5,
   "skills": [
     {
@@ -31,14 +31,13 @@
       "headerReason": "already-has-header"
     },
     {
-      "originalRef": "claude:long-task/long-task-design",
+      "originalRef": "claude:bp-demo/long-task-design",
       "newRef": "claude:bp-demo/long-task-design",
       "tool": "claude",
       "name": "long-task-design",
-      "srcPlugin": "long-task",
-      "srcDir": "C:\\Users\\Shannon\\.claude\\plugins\\cache\\longtaskforagent\\long-task\\1.0.0\\skills\\long-task-design",
-      "headerInjected": true,
-      "headerReason": "inserted"
+      "source": "reuse",
+      "headerInjected": false,
+      "headerReason": "already-has-header"
     }
   ]
 }
