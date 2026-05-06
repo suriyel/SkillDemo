@@ -48,7 +48,6 @@ description: "Use when SRS doc exists but no UCD doc and no design doc and no fe
 6. **定义样式 token** —— 色板、字体、间距、图标风格
 7. **呈现并审批 UCD** —— 非平凡项目按章节逐段
 8. **保存 UCD 文档** —— `$HARNESS_MEMORY_DIR/plans/YYYY-MM-DD-<topic>-ucd.md` 并提交
-9. **衔接到设计** —— **必需子 skill：** 调用 `long-task:long-task-design`
 
 **终态是调用 long-task-design。** 不要调用任何其他 skill。
 
