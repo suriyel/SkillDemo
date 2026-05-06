@@ -10,8 +10,8 @@
       "id": "long_task_requirements",
       "title": "long-task-requirements",
       "skillRef": "claude:bp-demo/long-task-requirements",
-      "x": 47.39996337890625,
-      "y": 141.875
+      "x": 117.39996337890625,
+      "y": 115.875
     },
     {
       "id": "long_task_ucd",
@@ -26,6 +26,46 @@
       "skillRef": "claude:bp-demo/long-task-design",
       "x": 207.39996337890625,
       "y": 370.875
+    },
+    {
+      "id": "iter_y",
+      "kind": "loop",
+      "title": "iter_y",
+      "x": 170,
+      "y": 500.00001525878906,
+      "iterator": {
+        "kind": "tasks",
+        "tasksSchemaRef": "default",
+        "selectStrategy": "first-pending"
+      },
+      "body": {
+        "startNode": "long_task_feature_design",
+        "nodes": [
+          {
+            "id": "long_task_feature_design",
+            "title": "long-task-feature-design",
+            "skillRef": "claude:long-task/long-task-feature-design",
+            "x": 43.39996337890625,
+            "y": 60
+          },
+          {
+            "id": "long_task_work_tdd",
+            "title": "long-task-work-tdd",
+            "skillRef": "claude:long-task/long-task-work-tdd",
+            "x": 50,
+            "y": 148
+          }
+        ],
+        "edges": [
+          {
+            "id": "bemotdu4w20i45",
+            "from": "long_task_feature_design",
+            "to": "long_task_work_tdd",
+            "when": "status == \"ok\""
+          }
+        ]
+      },
+      "maxIterations": 200
     }
   ],
   "edges": [
@@ -37,6 +77,11 @@
     {
       "from": "long_task_ucd",
       "to": "long_task_design",
+      "when": "status == \"ok\""
+    },
+    {
+      "from": "long_task_design",
+      "to": "iter_y",
       "when": "status == \"ok\""
     }
   ],

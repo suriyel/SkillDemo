@@ -1,6 +1,6 @@
 {
   "bpId": "demo",
-  "copiedAt": "2026-05-06T00:59:01.811Z",
+  "copiedAt": "2026-05-06T01:32:29.134Z",
   "headerVersion": 5,
   "skills": [
     {
@@ -34,7 +34,7 @@
       "headerInjected": false,
       "headerReason": "already-has-header",
       "resourcePlaceholdersRendered": 0,
-      "schemaPlaceholdersRendered": 1
+      "schemaPlaceholdersRendered": 2
     }
   ]
 }
