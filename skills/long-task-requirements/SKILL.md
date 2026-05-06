@@ -351,12 +351,10 @@ Cycle 2 仍 fail → escalate。
 > **input**: `approved_srs_sections`（Step 14 审批通过的章节 map）, `deferred_items`（Step 7–11 第 3 步确认的延后清单，可空）, `topic_name`, `single_round_flag`, `alignment_summary_text`（Expert 轨道；Lite 省略）, `srs_template_path`
 > **expect**: Structured Return Contract；`artifacts_written` 含 SRS 路径 + 可选 deferred 路径；`next_step_input` 含 `srs_path` / `topic`
 
-按 `references/approval-revise-loop.md` 处理返回。pass 后进 Step 16。
+按 `references/approval-revise-loop.md` 处理返回。
 
-### Step 16：衔接到 UCD
+结束当前Session对话
 
-1. 为下一阶段总结关键输入（引用 finalize 返回的 `srs_path`）
-2. **必需子 skill：** 调用 `long-task:long-task-ucd`
 
 ---
 

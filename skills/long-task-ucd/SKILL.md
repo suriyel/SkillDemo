@@ -274,7 +274,7 @@ UCD 文档保存并提交后：
 1. 为设计阶段总结关键输入：
    - **来自 SRS**：功能需求、NFR、约束
    - **来自 UCD**：样式 token、组件目录、页面布局 → 为设计文档的 UI/UX 节和前端架构提供信息
-2. **必需子 skill：** 调用 `long-task:long-task-design` 开始设计
+2. 结束Session对话
 
 ## UCD 阶段的伸缩
 
