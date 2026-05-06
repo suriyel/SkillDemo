@@ -176,12 +176,6 @@ SRS 描述系统必须做什么（WHAT）。设计文档描述怎么做（HOW）
   "ui": false
 }
 ```
-
-**bp-tasks 调用模板**（在 bp-advance 之前执行）：
-```bash
-node "$BP_TASKS_CMD" set iterate_features --items='[{"id":1,"category":"infrastructure","title":"Project Skeleton and CI","description":"M1: Project directory structure, pyproject.toml, CI workflow, core abstractions, storage clients (PostgreSQL, Redis, Qdrant, Elasticsearch)","priority":"high","status":"passing","verification_steps":["Given the project root, when checking directory structure, then src/, tests/, docs/, examples/, scripts/ directories exist","Given pyproject.toml exists, when running pip install -e ., then all dependencies install without error","Given .github/workflows/ci.yml exists, when pushed to GitHub, then CI workflow runs pytest and passes","Given storage clients module, when testing PostgreSQL connection with valid DATABASE_URL, then connection succeeds","Given storage clients module, when testing Redis connection with valid REDIS_URL, then ping returns PONG","Given storage clients module, when testing Qdrant connection with valid QDRANT_URL, then health check returns 200","Given storage clients module, when testing Elasticsearch connection with valid ELASTICSEARCH_URL, then cluster health returns green/yellow"],"dependencies":[],"ui":false}]'
-```
-（触发条件：`status == "blocked"`）
 <!-- SCHEMA END: default -->
 
 

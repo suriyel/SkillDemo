@@ -26,46 +26,6 @@
       "skillRef": "claude:bp-demo/long-task-design",
       "x": 207.39996337890625,
       "y": 370.875
-    },
-    {
-      "id": "iterate_features",
-      "kind": "loop",
-      "title": "iterate_features",
-      "x": 128,
-      "y": 519,
-      "iterator": {
-        "kind": "tasks",
-        "tasksSchemaRef": "default",
-        "selectStrategy": "first-pending"
-      },
-      "body": {
-        "startNode": "long_task_work_design",
-        "nodes": [
-          {
-            "id": "long_task_work_design",
-            "title": "long-task-work-design",
-            "skillRef": "claude:long-task/long-task-work-design",
-            "x": 47.39996337890625,
-            "y": 74
-          },
-          {
-            "id": "long_task_work_tdd",
-            "title": "long-task-work-tdd",
-            "skillRef": "claude:long-task/long-task-work-tdd",
-            "x": 44,
-            "y": 160
-          }
-        ],
-        "edges": [
-          {
-            "id": "bemotcmn3fuohy",
-            "from": "long_task_work_design",
-            "to": "long_task_work_tdd",
-            "when": "status == \"ok\""
-          }
-        ]
-      },
-      "maxIterations": 200
     }
   ],
   "edges": [
@@ -78,11 +38,6 @@
       "from": "long_task_ucd",
       "to": "long_task_design",
       "when": "status == \"ok\""
-    },
-    {
-      "from": "long_task_design",
-      "to": "iterate_features",
-      "when": "status == \"blocked\""
     }
   ],
   "tasksSchemas": {
