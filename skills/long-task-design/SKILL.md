@@ -251,7 +251,3 @@ node "$BP_TASKS_CMD" set iter_y --items='[{"id":1,"category":"infrastructure","t
 2. 每个关键依赖与目标 runtime 版本兼容。
 3. 对 copyleft license（GPL/AGPL）必须显式与用户确认。
 4. brownfield：新选型不得与 `$HARNESS_MEMORY_DIR/rules/coding-constraints.md` 的禁用清单冲突；如必须冲突，在 §1.4 "Rejected Alternatives" 列或以 `⚠ Design Override: [reason]` 标注。
-
-<!-- SCHEMA NOT FOUND: default -->
-
-<!-- SCHEMA NOT FOUND: default -->
