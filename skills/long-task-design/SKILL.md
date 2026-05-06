@@ -145,7 +145,8 @@ SRS 描述系统必须做什么（WHAT）。设计文档描述怎么做（HOW）
 2. **Key Types ↔ Schema 一致**：§4 每一行，核对 Provider 特性的 §2.N.2 Key Types 清单中出现响应 schema 类型或其承载类，且 Consumer 特性的 §2.N.2 包含请求方类型。纯文本对齐即可；§4 的 Schema 定义块是 SSOT。标记不匹配。
 3. **依赖完备性**：每一个出现在 §4 "Consumer" 列中的特性，核对其 §6.1 `Dependencies` 列与 §6.2 依赖链中均列出了 Provider 特性 ID。标记缺失的依赖边。
 
-## Step 6 生成需求拆分文档（ `$HARNESS_MEMORY_DIR/feature-list.json`）
+## Step 6 生成需求拆分文档
+
 格式如下：
 <!-- SCHEMA START: default -->
 ### Tasks schema "default" — items[] for `bp-tasks set iter_y`
