@@ -148,54 +148,36 @@ SRS 描述系统必须做什么（WHAT）。设计文档描述怎么做（HOW）
 ## Step 6 生成需求拆分文档（ `$HARNESS_MEMORY_DIR/feature-list.json`）
 格式如下：
 <!-- SCHEMA START: default -->
-### Tasks schema "default"
+### Tasks schema "default" — items[] for `bp-tasks set iter_y`
 
-每条 task 必含以下字段（loop 迭代时按数组逐条处理）：
-
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| `id` | string \| number | ✓ (L1) |  |
-| `status` | string | ✓ (L1) | default `pending` |
-| `title` | string | – (L2) |  |
-| `priority` | string | – (L2) | 枚举: `high`, `medium`, `low` |
-| `dependencies` | array | – (L2) | items: string \| number |
-| `category` | string | – (L3) |  |
-| `description` | string | – (L3) |  |
-| `verification_steps` | array | – (L3) |  |
-| `ui` | boolean | – (L3) |  |
-
-**doneValues** (匹配则视为 task 完成，loop 自动跳过)：`done`, `passing`
-
-**extensionFieldsAllowed=true** → 未声明字段原样透传，inner skill 可用 `{{loop.task.<field>}}` 引用。
-
-**Example item (单条 task 形态)**:
 ```json
-{
-  "id": 1,
-  "category": "infrastructure",
-  "title": "Project Skeleton and CI",
-  "description": "M1: Project directory structure, pyproject.toml, CI workflow, core abstractions, storage clients (PostgreSQL, Redis, Qdrant, Elasticsearch)",
-  "priority": "high",
-  "status": "passing",
-  "verification_steps": [
-    "Given the project root, when checking directory structure, then src/, tests/, docs/, examples/, scripts/ directories exist",
-    "Given pyproject.toml exists, when running pip install -e ., then all dependencies install without error",
-    "Given .github/workflows/ci.yml exists, when pushed to GitHub, then CI workflow runs pytest and passes",
-    "Given storage clients module, when testing PostgreSQL connection with valid DATABASE_URL, then connection succeeds",
-    "Given storage clients module, when testing Redis connection with valid REDIS_URL, then ping returns PONG",
-    "Given storage clients module, when testing Qdrant connection with valid QDRANT_URL, then health check returns 200",
-    "Given storage clients module, when testing Elasticsearch connection with valid ELASTICSEARCH_URL, then cluster health returns green/yellow"
-  ],
-  "dependencies": [],
-  "ui": false
-}
+// items[] 结构（注释即字段语义）
+[
+  {
+    "id": 1, // L1 必填: string | number
+    "status": "passing", // L1 必填: string; default "pending"; doneValues=["done","passing"] 时该 task 视为完成
+    "title": "Project Skeleton and CI", // L2 optional: string
+    "priority": "high", // L2 optional: string; enum=["high","medium","low"]
+    "dependencies": [], // L2 optional: array; items: string | number
+    "category": "infrastructure", // L3 optional: string
+    "description": "M1: Project directory structure, pyproject.toml, CI workflow, core abstractions, storage clients (PostgreSQL, Redis, Qdrant, Elasticsearch)", // L3 optional: string
+    "verification_steps": ["Given the project root, when checking directory structure, then src/, tests/, docs/, examples/, scripts/ directories exist","Given pyproject.toml exists, when running pip install -e ., then all dependencies install without error","Given .github/workflows/ci.yml exists, when pushed to GitHub, then CI workflow runs pytest and passes","Given storage clients module, when testing PostgreSQL connection with valid DATABASE_URL, then connection succeeds","Given storage clients module, when testing Redis connection with valid REDIS_URL, then ping returns PONG","Given storage clients module, when testing Qdrant connection with valid QDRANT_URL, then health check returns 200","Given storage clients module, when testing Elasticsearch connection with valid ELASTICSEARCH_URL, then cluster health returns green/yellow"], // L3 optional: array
+    "ui": false // L3 optional: boolean
+  }
+]
 ```
 
-**bp-tasks 调用模板**（在 bp-advance 之前执行）：
+**步骤**（在 bp-advance 之前**必须**执行）：
+1. 把派生的 items 数组持久化到 `$HARNESS_MEMORY_DIR/plans/<topic>-iter_y-tasks.json`（`<topic>` 与本 skill 已产出的 srs/design 等 doc 同主题；文件名 LLM 自行匹配填入）
+2. 用 `--items-file` 调用 bp-tasks（避免长 JSON 拼 bash 转义问题）：
+
 ```bash
-node "$BP_TASKS_CMD" set iter_y --items='[{"id":1,"category":"infrastructure","title":"Project Skeleton and CI","description":"M1: Project directory structure, pyproject.toml, CI workflow, core abstractions, storage clients (PostgreSQL, Redis, Qdrant, Elasticsearch)","priority":"high","status":"passing","verification_steps":["Given the project root, when checking directory structure, then src/, tests/, docs/, examples/, scripts/ directories exist","Given pyproject.toml exists, when running pip install -e ., then all dependencies install without error","Given .github/workflows/ci.yml exists, when pushed to GitHub, then CI workflow runs pytest and passes","Given storage clients module, when testing PostgreSQL connection with valid DATABASE_URL, then connection succeeds","Given storage clients module, when testing Redis connection with valid REDIS_URL, then ping returns PONG","Given storage clients module, when testing Qdrant connection with valid QDRANT_URL, then health check returns 200","Given storage clients module, when testing Elasticsearch connection with valid ELASTICSEARCH_URL, then cluster health returns green/yellow"],"dependencies":[],"ui":false}]'
+# <path> 替换为上一步落盘的真实路径
+node "$BP_TASKS_CMD" set iter_y --items-file=<path>
 ```
 （触发条件：`status == "ok"`）
+
+> 未声明字段透传，body skill 可用 `{{loop.task.<field>}}` 引用。
 <!-- SCHEMA END: default -->
 
 
