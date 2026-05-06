@@ -1,8 +1,9 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "demo",
   "version": "1.0.1",
   "title": "测试",
+  "description": "",
   "startNode": "long_task_requirements",
   "nodes": [
     {
@@ -23,8 +24,48 @@
       "id": "long_task_design",
       "title": "long-task-design",
       "skillRef": "claude:bp-demo/long-task-design",
-      "x": 266.39996337890625,
-      "y": 408.875
+      "x": 207.39996337890625,
+      "y": 370.875
+    },
+    {
+      "id": "iterate_features",
+      "kind": "loop",
+      "title": "iterate_features",
+      "x": 128,
+      "y": 519,
+      "iterator": {
+        "kind": "tasks",
+        "tasksSchemaRef": "default",
+        "selectStrategy": "first-pending"
+      },
+      "body": {
+        "startNode": "long_task_work_design",
+        "nodes": [
+          {
+            "id": "long_task_work_design",
+            "title": "long-task-work-design",
+            "skillRef": "claude:long-task/long-task-work-design",
+            "x": 47.39996337890625,
+            "y": 74
+          },
+          {
+            "id": "long_task_work_tdd",
+            "title": "long-task-work-tdd",
+            "skillRef": "claude:long-task/long-task-work-tdd",
+            "x": 44,
+            "y": 160
+          }
+        ],
+        "edges": [
+          {
+            "id": "bemotcmn3fuohy",
+            "from": "long_task_work_design",
+            "to": "long_task_work_tdd",
+            "when": "status == \"ok\""
+          }
+        ]
+      },
+      "maxIterations": 200
     }
   ],
   "edges": [
@@ -37,6 +78,91 @@
       "from": "long_task_ucd",
       "to": "long_task_design",
       "when": "status == \"ok\""
+    },
+    {
+      "from": "long_task_design",
+      "to": "iterate_features",
+      "when": "status == \"blocked\""
     }
-  ]
+  ],
+  "tasksSchemas": {
+    "default": {
+      "requiredFields": {
+        "id": {
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "default": "pending"
+        }
+      },
+      "recommendedFields": {
+        "title": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "string",
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "number"
+            ]
+          }
+        }
+      },
+      "userFields": {
+        "category": {
+          "type": "string",
+          "required": false
+        },
+        "description": {
+          "type": "string",
+          "required": false
+        },
+        "verification_steps": {
+          "type": "array",
+          "required": false
+        },
+        "ui": {
+          "type": "boolean",
+          "required": false
+        }
+      },
+      "extensionFieldsAllowed": true,
+      "doneValues": [
+        "done",
+        "passing"
+      ],
+      "example": {
+        "id": 1,
+        "category": "infrastructure",
+        "title": "Project Skeleton and CI",
+        "description": "M1: Project directory structure, pyproject.toml, CI workflow, core abstractions, storage clients (PostgreSQL, Redis, Qdrant, Elasticsearch)",
+        "priority": "high",
+        "status": "passing",
+        "verification_steps": [
+          "Given the project root, when checking directory structure, then src/, tests/, docs/, examples/, scripts/ directories exist",
+          "Given pyproject.toml exists, when running pip install -e ., then all dependencies install without error",
+          "Given .github/workflows/ci.yml exists, when pushed to GitHub, then CI workflow runs pytest and passes",
+          "Given storage clients module, when testing PostgreSQL connection with valid DATABASE_URL, then connection succeeds",
+          "Given storage clients module, when testing Redis connection with valid REDIS_URL, then ping returns PONG",
+          "Given storage clients module, when testing Qdrant connection with valid QDRANT_URL, then health check returns 200",
+          "Given storage clients module, when testing Elasticsearch connection with valid ELASTICSEARCH_URL, then cluster health returns green/yellow"
+        ],
+        "dependencies": [],
+        "ui": false
+      }
+    }
+  }
 }

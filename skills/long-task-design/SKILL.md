@@ -133,6 +133,58 @@ SRS 描述系统必须做什么（WHAT）。设计文档描述怎么做（HOW）
 
 把已审批设计保存到 `$HARNESS_MEMORY_DIR/plans/YYYY-MM-DD-<topic>-design.md`。
 
+<!-- SCHEMA START: default -->
+### Tasks schema "default"
+
+每条 task 必含以下字段（loop 迭代时按数组逐条处理）：
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `id` | string \| number | ✓ (L1) |  |
+| `status` | string | ✓ (L1) | default `pending` |
+| `title` | string | – (L2) |  |
+| `priority` | string | – (L2) | 枚举: `high`, `medium`, `low` |
+| `dependencies` | array | – (L2) | items: string \| number |
+| `category` | string | – (L3) |  |
+| `description` | string | – (L3) |  |
+| `verification_steps` | array | – (L3) |  |
+| `ui` | boolean | – (L3) |  |
+
+**doneValues** (匹配则视为 task 完成，loop 自动跳过)：`done`, `passing`
+
+**extensionFieldsAllowed=true** → 未声明字段原样透传，inner skill 可用 `{{loop.task.<field>}}` 引用。
+
+**Example item (单条 task 形态)**:
+```json
+{
+  "id": 1,
+  "category": "infrastructure",
+  "title": "Project Skeleton and CI",
+  "description": "M1: Project directory structure, pyproject.toml, CI workflow, core abstractions, storage clients (PostgreSQL, Redis, Qdrant, Elasticsearch)",
+  "priority": "high",
+  "status": "passing",
+  "verification_steps": [
+    "Given the project root, when checking directory structure, then src/, tests/, docs/, examples/, scripts/ directories exist",
+    "Given pyproject.toml exists, when running pip install -e ., then all dependencies install without error",
+    "Given .github/workflows/ci.yml exists, when pushed to GitHub, then CI workflow runs pytest and passes",
+    "Given storage clients module, when testing PostgreSQL connection with valid DATABASE_URL, then connection succeeds",
+    "Given storage clients module, when testing Redis connection with valid REDIS_URL, then ping returns PONG",
+    "Given storage clients module, when testing Qdrant connection with valid QDRANT_URL, then health check returns 200",
+    "Given storage clients module, when testing Elasticsearch connection with valid ELASTICSEARCH_URL, then cluster health returns green/yellow"
+  ],
+  "dependencies": [],
+  "ui": false
+}
+```
+
+**bp-tasks 调用模板**（在 bp-advance 之前执行）：
+```bash
+node "$BP_TASKS_CMD" set iterate_features --items='[{"id":1,"category":"infrastructure","title":"Project Skeleton and CI","description":"M1: Project directory structure, pyproject.toml, CI workflow, core abstractions, storage clients (PostgreSQL, Redis, Qdrant, Elasticsearch)","priority":"high","status":"passing","verification_steps":["Given the project root, when checking directory structure, then src/, tests/, docs/, examples/, scripts/ directories exist","Given pyproject.toml exists, when running pip install -e ., then all dependencies install without error","Given .github/workflows/ci.yml exists, when pushed to GitHub, then CI workflow runs pytest and passes","Given storage clients module, when testing PostgreSQL connection with valid DATABASE_URL, then connection succeeds","Given storage clients module, when testing Redis connection with valid REDIS_URL, then ping returns PONG","Given storage clients module, when testing Qdrant connection with valid QDRANT_URL, then health check returns 200","Given storage clients module, when testing Elasticsearch connection with valid ELASTICSEARCH_URL, then cluster health returns green/yellow"],"dependencies":[],"ui":false}]'
+```
+（触发条件：`status == "blocked"`）
+<!-- SCHEMA END: default -->
+
+
 ### 模板用法
 
 读取 Step 2 找到的模板（用户指定或默认 `$HARNESS_MEMORY_DIR/templates/design-template.md`）：
