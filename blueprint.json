@@ -44,14 +44,14 @@
           {
             "id": "long_task_feature_design",
             "title": "long-task-feature-design",
-            "skillRef": "claude:long-task/long-task-feature-design",
+            "skillRef": "claude:bp-demo/long-task-feature-design",
             "x": 43.39996337890625,
             "y": 60
           },
           {
             "id": "long_task_work_tdd",
             "title": "long-task-work-tdd",
-            "skillRef": "claude:long-task/long-task-work-tdd",
+            "skillRef": "claude:bp-demo/long-task-work-tdd",
             "x": 50,
             "y": 148
           }

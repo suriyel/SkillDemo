@@ -1,6 +1,6 @@
 {
   "bpId": "demo",
-  "copiedAt": "2026-05-06T01:46:30.625Z",
+  "copiedAt": "2026-05-06T02:36:39.453Z",
   "headerVersion": 5,
   "skills": [
     {
@@ -35,6 +35,32 @@
       "headerReason": "already-has-header",
       "resourcePlaceholdersRendered": 0,
       "schemaPlaceholdersRendered": 2
+    },
+    {
+      "originalRef": "claude:long-task/long-task-feature-design",
+      "newRef": "claude:bp-demo/long-task-feature-design",
+      "tool": "claude",
+      "name": "long-task-feature-design",
+      "srcPlugin": "long-task",
+      "srcDir": "C:\\Users\\Shannon\\.claude\\plugins\\cache\\longtaskforagent\\long-task\\1.0.0\\skills\\long-task-feature-design",
+      "headerInjected": true,
+      "headerReason": "inserted",
+      "resourcePlaceholdersRendered": 0,
+      "schemaPlaceholdersRendered": 0,
+      "containerLoop": "iter_y"
+    },
+    {
+      "originalRef": "claude:long-task/long-task-work-tdd",
+      "newRef": "claude:bp-demo/long-task-work-tdd",
+      "tool": "claude",
+      "name": "long-task-work-tdd",
+      "srcPlugin": "long-task",
+      "srcDir": "C:\\Users\\Shannon\\.claude\\plugins\\cache\\longtaskforagent\\long-task\\1.0.0\\skills\\long-task-work-tdd",
+      "headerInjected": true,
+      "headerReason": "inserted",
+      "resourcePlaceholdersRendered": 0,
+      "schemaPlaceholdersRendered": 0,
+      "containerLoop": "iter_y"
     }
   ]
 }
