@@ -1,6 +1,6 @@
 {
   "bpId": "demo",
-  "copiedAt": "2026-05-06T03:36:32.450Z",
+  "copiedAt": "2026-05-06T07:44:26.486Z",
   "headerVersion": 5,
   "skills": [
     {
@@ -34,7 +34,7 @@
       "headerInjected": false,
       "headerReason": "already-has-header",
       "resourcePlaceholdersRendered": 0,
-      "schemaPlaceholdersRendered": 2
+      "schemaPlaceholdersRendered": 1
     },
     {
       "originalRef": "claude:bp-demo/long-task-feature-design",

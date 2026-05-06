@@ -40,9 +40,6 @@ SRS 描述系统必须做什么（WHAT）。设计文档描述怎么做（HOW）
 3. **提出 2-3 个方案**（对话步骤，不产出独立章节）—— 带权衡与你的推荐；选定后论证写入 §1.4
 4. **按章节审批设计** —— §1 架构、§2 Feature Integration Specs、§3 数据模型（条件）、§4 内部 API 契约、§5 外部接口（条件）、§6 任务分解与依赖链
 5. **撰写设计文档** —— 保存到 `$HARNESS_MEMORY_DIR/plans/YYYY-MM-DD-<topic>-design.md` 并提交
-6. **衔接到 ATS** —— **必需子 skill：** 调用 `long-task:long-task-ats`
-
-**终态是调用 long-task-ats。** 不要调用任何其他实现 skill。
 
 ## Step 1：阅读 SRS 与 UCD 并抽取设计输入
 
@@ -199,60 +196,6 @@ node "$BP_TASKS_CMD" set iter_y --items='[{"id":1,"category":"infrastructure","t
 1. **契约完备性**：§1.3 组件图的每条边，核对 §4 内部 API 契约中存在对应一行。标记缺失行。
 2. **Key Types ↔ Schema 一致**：§4 每一行，核对 Provider 特性的 §2.N.2 Key Types 清单中出现响应 schema 类型或其承载类，且 Consumer 特性的 §2.N.2 包含请求方类型。纯文本对齐即可；§4 的 Schema 定义块是 SSOT。标记不匹配。
 3. **依赖完备性**：每一个出现在 §4 "Consumer" 列中的特性，核对其 §6.1 `Dependencies` 列与 §6.2 依赖链中均列出了 Provider 特性 ID。标记缺失的依赖边。
-
-把任何被标记的问题呈现给用户。继续到 ATS 前解决。
-
-<!-- SCHEMA START: default -->
-### Tasks schema "default"
-
-每条 task 必含以下字段（loop 迭代时按数组逐条处理）：
-
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| `id` | string \| number | ✓ (L1) |  |
-| `status` | string | ✓ (L1) | default `pending` |
-| `title` | string | – (L2) |  |
-| `priority` | string | – (L2) | 枚举: `high`, `medium`, `low` |
-| `dependencies` | array | – (L2) | items: string \| number |
-| `category` | string | – (L3) |  |
-| `description` | string | – (L3) |  |
-| `verification_steps` | array | – (L3) |  |
-| `ui` | boolean | – (L3) |  |
-
-**doneValues** (匹配则视为 task 完成，loop 自动跳过)：`done`, `passing`
-
-**extensionFieldsAllowed=true** → 未声明字段原样透传，inner skill 可用 `{{loop.task.<field>}}` 引用。
-
-**Example item (单条 task 形态)**:
-```json
-{
-  "id": 1,
-  "category": "infrastructure",
-  "title": "Project Skeleton and CI",
-  "description": "M1: Project directory structure, pyproject.toml, CI workflow, core abstractions, storage clients (PostgreSQL, Redis, Qdrant, Elasticsearch)",
-  "priority": "high",
-  "status": "passing",
-  "verification_steps": [
-    "Given the project root, when checking directory structure, then src/, tests/, docs/, examples/, scripts/ directories exist",
-    "Given pyproject.toml exists, when running pip install -e ., then all dependencies install without error",
-    "Given .github/workflows/ci.yml exists, when pushed to GitHub, then CI workflow runs pytest and passes",
-    "Given storage clients module, when testing PostgreSQL connection with valid DATABASE_URL, then connection succeeds",
-    "Given storage clients module, when testing Redis connection with valid REDIS_URL, then ping returns PONG",
-    "Given storage clients module, when testing Qdrant connection with valid QDRANT_URL, then health check returns 200",
-    "Given storage clients module, when testing Elasticsearch connection with valid ELASTICSEARCH_URL, then cluster health returns green/yellow"
-  ],
-  "dependencies": [],
-  "ui": false
-}
-```
-
-**bp-tasks 调用模板**（在 bp-advance 之前执行）：
-```bash
-node "$BP_TASKS_CMD" set iter_y --items='[{"id":1,"category":"infrastructure","title":"Project Skeleton and CI","description":"M1: Project directory structure, pyproject.toml, CI workflow, core abstractions, storage clients (PostgreSQL, Redis, Qdrant, Elasticsearch)","priority":"high","status":"passing","verification_steps":["Given the project root, when checking directory structure, then src/, tests/, docs/, examples/, scripts/ directories exist","Given pyproject.toml exists, when running pip install -e ., then all dependencies install without error","Given .github/workflows/ci.yml exists, when pushed to GitHub, then CI workflow runs pytest and passes","Given storage clients module, when testing PostgreSQL connection with valid DATABASE_URL, then connection succeeds","Given storage clients module, when testing Redis connection with valid REDIS_URL, then ping returns PONG","Given storage clients module, when testing Qdrant connection with valid QDRANT_URL, then health check returns 200","Given storage clients module, when testing Elasticsearch connection with valid ELASTICSEARCH_URL, then cluster health returns green/yellow"],"dependencies":[],"ui":false}]'
-```
-（触发条件：`status == "ok"`）
-<!-- SCHEMA END: default -->
-
 
 ## 设计阶段的伸缩
 
